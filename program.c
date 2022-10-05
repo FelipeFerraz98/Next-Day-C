@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(void) {
-  int day, year, month, leapyear=0, trade=0;
+  int day, year, month, february=0, trade=0;
   printf("Enter the date: mm/dd/yy: ");
   scanf("%d/%d/%d", &month,&day,&year);
   
@@ -30,30 +30,51 @@ int main(void) {
   }
 
 //February
-  if(month == 2 && trade == 0){
-    if(day == 28){
-      day = 1;
-      month++;
-      trade = 1;
-    }
-    if(day < 28 && month == 2){
-      day++;
-    }
+  if (month == 2 && trade == 0){
+
+    if (day == 28 || day == 29){
     
     //Leap year analysis
-    if(day == 29){
-      if(year % 400 == 0 || year % 4 == 0){
+        if (year % 400 == 0 || year % 4 == 0){
+            if (day == 29){
+                day = 1;
+                month++;
+                trade = 1;
+              }
+        
+
+            else{
+                day = day + 1;
+                trade = 1;
+              }
+        }
+    }
+      
+        
+    //If the year is not a leap year
+    if (day == 28 || day == 29 && trade == 0){
+      if(day == 29){
         day = 1;
         month++;
         trade = 1;
+        printf("The year is not a leap year, so there is no day 29, the next day after the 28 will be: %d/%d/%d", month, day, year);
+        february = 1;
+        //Day 29 does not exist so the program ends here showing the possible next day
       }
-        
-      //If the year is not a leap year (leapyear=1)
-      else{
-        leapyear = 1;
+    else{
+    day = 1;
+    month++;
+    trade = 1;
       }
+      
     }
+
+    //Normal day
+    if (day < 28 && trade == 0){
+        day++;
+      }
   }
+      
 
 //December
   if(month == 12 && trade == 0){
@@ -67,11 +88,8 @@ int main(void) {
     }
   }
 
-  if(leapyear == 1){
-    printf("Invalid date! The year is not a leap year");
-  }
-    
-  else{
+  
+  if (february == 0){
     printf("\nThe next day: %d/%d/%d", month, day, year);
   }
   
